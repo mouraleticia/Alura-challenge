@@ -2,7 +2,7 @@
 rag_chain.py
 ------------
 Responsável pela ETAPA 3 do pipeline: recuperação de contexto (retrieval),
-geração de resposta com o Claude, citação de fontes e fallback anti-alucinação.
+geração de resposta com o Gemini, citação de fontes e fallback anti-alucinação.
 
 Este módulo é importado pelo app.py (interface Streamlit), mas também pode
 ser testado isoladamente:
@@ -23,10 +23,11 @@ load_dotenv()  # carrega GOOGLE_API_KEY do arquivo .env
 CHROMA_DIR = "./chroma_db"
 EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 
-# Modelo Gemini usado para gerar as respostas — "flash" e "flash-lite" têm
-# camada gratuita generosa (sem cartão de crédito). Pode ser sobrescrito via
-# variável de ambiente GOOGLE_MODEL sem precisar mexer no código.
+# Modelo Gemini usado para gerar as respostas — "flash" tem camada gratuita
+# generosa (sem cartão de crédito). Pode ser sobrescrito via variável de
+# ambiente GOOGLE_MODEL sem precisar mexer no código.
 MODELO_GEMINI = os.getenv("GOOGLE_MODEL", "gemini-2.5-flash")
+
 
 # Quantos chunks recuperar por pergunta.
 TOP_K = 4
@@ -78,7 +79,7 @@ def responder(pergunta: str) -> dict:
     Executa o pipeline RAG completo para uma pergunta:
     1. Busca os chunks mais relevantes no Chroma.
     2. Verifica se há contexto relevante o suficiente (fallback anti-alucinação).
-    3. Monta o prompt e chama o Claude.
+    3. Monta o prompt e chama o Gemini.
     4. Retorna a resposta junto com a lista de fontes usadas.
 
     Retorno: {"resposta": str, "fontes": list[str]}
