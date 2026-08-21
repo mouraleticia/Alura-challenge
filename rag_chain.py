@@ -74,6 +74,28 @@ def _formatar_fonte(metadata: dict) -> str:
     return arquivo
 
 
+def _extrair_texto(conteudo) -> str:
+    """
+    Extrai apenas o texto da resposta do LLM. Modelos mais novos do Gemini
+    (3.x) retornam o conteúdo como uma lista de blocos (com metadados
+    internos de verificação), em vez de uma string simples — esta função
+    lida com os dois formatos.
+    """
+    if isinstance(conteudo, str):
+        return conteudo
+
+    if isinstance(conteudo, list):
+        partes = []
+        for bloco in conteudo:
+            if isinstance(bloco, str):
+                partes.append(bloco)
+            elif isinstance(bloco, dict) and bloco.get("type") == "text":
+                partes.append(bloco.get("text", ""))
+        return "".join(partes).strip()
+
+    return str(conteudo)
+
+
 def responder(pergunta: str) -> dict:
     """
     Executa o pipeline RAG completo para uma pergunta:
@@ -115,7 +137,7 @@ def responder(pergunta: str) -> dict:
 
     fontes = sorted(set(_formatar_fonte(doc.metadata) for doc, _ in resultados_relevantes))
 
-    return {"resposta": resposta.content, "fontes": fontes}
+    return {"resposta": _extrair_texto(resposta.content), "fontes": fontes}
 
 
 if __name__ == "__main__":
