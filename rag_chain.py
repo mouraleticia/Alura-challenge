@@ -26,7 +26,7 @@ EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 # Modelo Gemini usado para gerar as respostas — "flash" tem camada gratuita
 # generosa (sem cartão de crédito). Pode ser sobrescrito via variável de
 # ambiente GOOGLE_MODEL sem precisar mexer no código.
-MODELO_GEMINI = os.getenv("GOOGLE_MODEL", "gemini-2.5-flash")
+MODELO_GEMINI = os.getenv("GOOGLE_MODEL", "gemini-3.6-flash")
 
 
 # Quantos chunks recuperar por pergunta.
