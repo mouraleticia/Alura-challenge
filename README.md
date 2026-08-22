@@ -169,8 +169,7 @@ docker exec -it alura-agent python ingest.py --file regras_gamificacao.csv
 http://SEU_IP_PUBLICO:8501
 ```
  
-> 📸 **Print/link da aplicação rodando na OCI:** _[Alura Agent rodando na OCI](screenshots/deploy_oci.png)_
-
+> 📸 **Print/link da aplicação rodando na OCI:** _![Alura Agent rodando na OCI](screenshots/deploy_oci.png)
 
  link http://163.176.214.62:8501
 ---
