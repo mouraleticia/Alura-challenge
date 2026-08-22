@@ -10,6 +10,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Copia e instala as dependências Python primeiro (aproveita cache do Docker)
 COPY requirements.txt .
+
+# Instala o PyTorch na versão CPU-only ANTES do resto — evita que o
+# sentence-transformers puxe a versão com suporte a GPU CUDA (muito maior
+# e inútil aqui, já que a instância não tem GPU nenhuma).
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copia o restante do código da aplicação
